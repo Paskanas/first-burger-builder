@@ -37,7 +37,7 @@ const burgerIngredient = (props) => {
 
 //TO DO
 //PropType validations
-burgerIngredient.PropTypes = {
+burgerIngredient.propTypes = {
   type: PropTypes.string.isRequired,
 };
 
