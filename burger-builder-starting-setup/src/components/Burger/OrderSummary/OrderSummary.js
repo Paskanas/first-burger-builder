@@ -32,9 +32,11 @@ class OrderSummary extends Component {
         <Button clicked={this.props.cancelPurchase} btnType="Danger">
           CANCEL
         </Button>
+        {/* <NavLink to="/Checkout"> */}
         <Button btnType="Success" clicked={this.props.continuePurchase}>
           CONTINUE
         </Button>
+        {/* </NavLink> */}
       </Aux>
     );
   }
