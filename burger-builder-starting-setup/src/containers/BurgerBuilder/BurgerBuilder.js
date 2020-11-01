@@ -9,7 +9,8 @@ import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
-import * as actionTypes from "../../store/action/action";
+// import * as actionTypes from "../../store/actions/actionTypes";
+import * as actions from "../../store/actions"; // it is not nessesery write index file, gets automatically
 
 class BurgerBuilder extends Component {
   state = {
@@ -18,23 +19,13 @@ class BurgerBuilder extends Component {
     error: false,
   };
 
-  // componentDidMount() {
-  //   console.log(
-  //     "BurgerBuilder -> render -> this.state.loading",
-  //     this.state.loading
-  //   );
-
-  //   console.log("BurgerBuilder -> componentDidMount -> this.props", this.props);
-  //   axios
-  //     .get("https://react-burger-builder-aa98c.firebaseio.com/ingredients.json")
-  //     .then((response) => {
-  //       this.props.onIngredientAddeds(response.data);
-  //       // this.setState({ ingredients: response.data });
-  //     })
-  //     .catch((error) => {
-  //       this.setState({ error: true });
-  //     });
-  // }
+  componentDidMount() {
+    console.log(
+      "BurgerBuilder -> render -> this.state.loading",
+      this.state.loading
+    );
+    this.props.onFetchIngredients();
+  }
 
   updatePurchaseState(ingredients) {
     const sum = Object.keys(ingredients)
@@ -56,6 +47,7 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
+    this.props.onInitPurchase();
     this.props.history.push("/checkout");
   };
 
@@ -69,10 +61,10 @@ class BurgerBuilder extends Component {
 
     let orderSummary = null;
     console.log(
-      "BurgerBuilder -> render -> this.state.error",
-      this.state.error
+      "BurgerBuilder -> render -> this.props.error",
+      this.props.error
     );
-    let burger = this.state.error ? (
+    let burger = this.props.error ? (
       <p>Ingredients can't be loaded!</p>
     ) : (
       <Spinner />
@@ -104,14 +96,6 @@ class BurgerBuilder extends Component {
         "3BurgerBuilder -> render -> this.state.loading",
         this.state.loading
       );
-      if (this.state.loading) {
-        console.log(
-          "2BurgerBuilder -> render -> this.state.loading",
-          this.state.loading
-        );
-
-        orderSummary = <Spinner />;
-      }
     }
 
     return (
@@ -130,23 +114,19 @@ class BurgerBuilder extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    ingredients: state.ingredients,
-    totalPrice: state.totalPrice,
+    ingredients: state.burgerBuilder.ingredients,
+    totalPrice: state.burgerBuilder.totalPrice,
+    error: state.error,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onIngredientAdded: (ingrName) =>
-      dispatch({
-        type: actionTypes.ADD_INGREDIENTS,
-        ingredientName: ingrName,
-      }),
+    onIngredientAdded: (ingrName) => dispatch(actions.addIngredient(ingrName)),
     onIngredientRemoved: (ingrName) =>
-      dispatch({
-        type: actionTypes.REMOVE_INGREDIENTS,
-        ingredientName: ingrName,
-      }),
+      dispatch(actions.removeIngredient(ingrName)),
+    onFetchIngredients: () => dispatch(actions.fetchIngredients()),
+    onInitPurchase: () => dispatch(actions.puchaseInit()),
   };
 };
 
