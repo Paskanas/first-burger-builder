@@ -5,7 +5,7 @@ import Button from "../../UI/Button/Button";
 class OrderSummary extends Component {
   //This could be a functional component, doesn't have to be class
   componentWillUpdate() {
-    console.log("[OrderSummary] WillUpdate");
+    // console.log("[OrderSummary] WillUpdate");
   }
 
   render() {
@@ -32,9 +32,11 @@ class OrderSummary extends Component {
         <Button clicked={this.props.cancelPurchase} btnType="Danger">
           CANCEL
         </Button>
+        {/* <NavLink to="/Checkout"> */}
         <Button btnType="Success" clicked={this.props.continuePurchase}>
           CONTINUE
         </Button>
+        {/* </NavLink> */}
       </Aux>
     );
   }

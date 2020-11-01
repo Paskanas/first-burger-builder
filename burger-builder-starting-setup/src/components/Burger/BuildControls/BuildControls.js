@@ -5,7 +5,7 @@ import classes from "./BuildControls.css";
 const controls = [
   { label: "Salad", type: "salad" },
   { label: "Bacon", type: "bacon" },
-  { label: "Meat", type: "meat" },
+  { label: "Falafel", type: "falafel" },
   { label: "Cheese", type: "cheese" },
 ];
 
@@ -24,7 +24,7 @@ const buildControls = (props) => (
         disabled={props.disabled[ctrl.type]}
       />
     ))}
-    {console.log(props.purchasable)}
+    {/* {console.log(props.purchasable)} */}
     <button
       className={classes.OrderButton}
       disabled={!props.purchasable}
