@@ -5,6 +5,7 @@ const initialState = {
   ingredients: null,
   totalPrice: 4,
   error: false,
+  building: false,
 };
 
 const INGREDIENT_PRICES = {
@@ -32,6 +33,7 @@ const reducer = (state = initialState, action) => {
       totalPrice: addValueBoolean
         ? state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
         : state.totalPrice - INGREDIENT_PRICES[action.ingredientName],
+      building: true,
     };
   };
 
@@ -46,6 +48,7 @@ const reducer = (state = initialState, action) => {
       ingredients: setIngredients,
       totalPrice: 4,
       error: false,
+      building: false,
     });
   };
 

@@ -16,7 +16,7 @@
   background-color: white;
   font: inherit;
   padding: 6px 10px;
-  display: black;
+  display: block;
   width: 100%;
   box-sizing: border-box;
 }
@@ -29,9 +29,4 @@
 .Invalid {
   border: 1px solid red;
   background-color: #fda49a;
-}
-
-.ValidationError {
-  color: red;
-  margin: 5px 0;
 }

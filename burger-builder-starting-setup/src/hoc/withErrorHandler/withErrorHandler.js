@@ -8,29 +8,31 @@ const withErrorHandler = (WrappedComponent, axios) => {
       error: null,
     };
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
       this.reqInterceptor = axios.interceptors.request.use((req) => {
         this.setState({ error: null });
         return req;
       });
+
       this.resInterceptor = axios.interceptors.response.use(
         (res) => res,
         (error) => {
-          console.log(error);
-          this.setState({ error: error });
+          this.setState({
+            error: error,
+          });
         }
       );
     }
 
     componentWillUnmount() {
       axios.interceptors.request.eject(this.reqInterceptor);
-      axios.interceptors.request.eject(this.resInterceptor);
+      axios.interceptors.response.eject(this.resInterceptor);
     }
 
     errorConfirmedHandler = () => {
+      console.log("error2", this.state.error);
       this.setState({ error: null });
     };
-
     render() {
       return (
         <Aux>

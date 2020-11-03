@@ -24,6 +24,7 @@ class BurgerBuilder extends Component {
       "BurgerBuilder -> render -> this.state.loading",
       this.state.loading
     );
+
     this.props.onFetchIngredients();
   }
 
@@ -39,7 +40,12 @@ class BurgerBuilder extends Component {
   }
 
   purchaseHandler = () => {
-    this.setState({ purchasing: true });
+    if (this.props.isAuth) {
+      this.setState({ purchasing: true });
+    } else {
+      this.props.onSetAuthRedirectPath("/checkout");
+      this.props.history.push("/auth");
+    }
   };
 
   purchaseCancelHandler = () => {
@@ -60,10 +66,6 @@ class BurgerBuilder extends Component {
     }
 
     let orderSummary = null;
-    console.log(
-      "BurgerBuilder -> render -> this.props.error",
-      this.props.error
-    );
     let burger = this.props.error ? (
       <p>Ingredients can't be loaded!</p>
     ) : (
@@ -81,6 +83,7 @@ class BurgerBuilder extends Component {
             price={this.props.totalPrice}
             purchasable={this.updatePurchaseState(this.props.ingredients)}
             ordered={this.purchaseHandler}
+            isAuth={this.props.isAuth}
           />
         </Aux>
       );
@@ -91,10 +94,6 @@ class BurgerBuilder extends Component {
           continuePurchase={this.purchaseContinueHandler}
           totalPrice={this.props.totalPrice.toFixed(2)}
         />
-      );
-      console.log(
-        "3BurgerBuilder -> render -> this.state.loading",
-        this.state.loading
       );
     }
 
@@ -117,6 +116,7 @@ const mapStateToProps = (state) => {
     ingredients: state.burgerBuilder.ingredients,
     totalPrice: state.burgerBuilder.totalPrice,
     error: state.error,
+    isAuth: state.auth.token,
   };
 };
 
@@ -127,6 +127,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.removeIngredient(ingrName)),
     onFetchIngredients: () => dispatch(actions.fetchIngredients()),
     onInitPurchase: () => dispatch(actions.puchaseInit()),
+    onSetAuthRedirectPath: (path) =>
+      dispatch(actions.setAuthRederectPath(path)),
   };
 };
 
