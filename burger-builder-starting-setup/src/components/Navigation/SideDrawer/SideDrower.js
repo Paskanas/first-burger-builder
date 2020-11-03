@@ -19,7 +19,8 @@ const sideDrower = (props) => {
           <Logo />
         </div>
         <nav>
-          <NavigationItems />
+          {console.log("props.isAuth", props.isAuth)}
+          <NavigationItems isAuth={props.isAuth} />
         </nav>
       </div>
     </Aux>

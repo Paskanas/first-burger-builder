@@ -73,12 +73,13 @@ class ContactData extends Component {
       email: {
         elementType: "input",
         elementConfig: {
-          type: "text",
+          type: "email",
           placeholder: "Your email",
         },
         value: "",
         validation: {
           required: true,
+          isEmail: true,
         },
         valid: false,
         touched: false,
@@ -106,7 +107,6 @@ class ContactData extends Component {
 
   orderHandler = (event) => {
     event.preventDefault();
-    // this.setState({ loading: true });
     const formData = {};
     for (let formElement in this.state.orderForm) {
       formData[formElement] = this.state.orderForm[formElement].value;
@@ -115,10 +115,9 @@ class ContactData extends Component {
       ingredients: this.props.ingredients,
       price: this.props.price,
       orderData: formData,
+      userId: this.props.userId,
     };
-    console.log("order", order);
-    this.props.onOrderBurger(order);
-    console.log("finished onOrderBurger");
+    this.props.onOrderBurger(order, this.props.token);
     // axios
     //   .post("/orders.json", order)
     //   .then((response) => {
@@ -135,7 +134,6 @@ class ContactData extends Component {
 
   checkValidity(value, rules) {
     let isValid = true;
-    //not required
     if (!rules) {
       return true;
     }
@@ -143,13 +141,23 @@ class ContactData extends Component {
     if (rules.required) {
       isValid = value.trim() !== "" && isValid;
     }
-    console.log("ContactData -> checkValidity -> isValid", isValid);
+
     if (rules.minLength) {
       isValid = value.length >= rules.minLength && isValid;
     }
 
     if (rules.maxLength) {
       isValid = value.length <= rules.maxLength && isValid;
+    }
+
+    if (rules.isEmail) {
+      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+      isValid = pattern.test(value) && isValid;
+    }
+
+    if (rules.isNumeric) {
+      const pattern = /^\d+$/;
+      isValid = pattern.test(value) && isValid;
     }
 
     return isValid;
@@ -227,12 +235,15 @@ const mapStateToProps = (state) => {
     ingredients: state.burgerBuilder.ingredients,
     price: state.burgerBuilder.totalPrice,
     loading: state.order.loading,
+    token: state.auth.token,
+    userId: state.auth.userId,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onOrderBurger: (orderData) => dispatch(actions.puchaseBurger(orderData)),
+    onOrderBurger: (orderData, token) =>
+      dispatch(actions.puchaseBurger(orderData, token)),
   };
 };
 
