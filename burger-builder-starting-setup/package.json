@@ -61,11 +61,11 @@
     "test:staged": "cross-env CI=true react-scripts test --env=jsdom --findRelatedTests"
   },
   "lint-staged": {
-    "src/**/*.js": [
-      "test:staged",
-      "git add"
-    ]
-  },
+    "src/**/*.{js,jsx,json,css}": [
+    "prettier --single-quote --write",
+    "git add"
+     ]
+    },
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,mjs}"
