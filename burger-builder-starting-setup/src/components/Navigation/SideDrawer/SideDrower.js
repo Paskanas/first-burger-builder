@@ -15,12 +15,11 @@ const sideDrower = (props) => {
     <Aux>
       <Backdrop show={props.open} clicked={props.closed} />
       <div className={attachedClasses.join(" ")}>
-        <div className={classes.Logo}>
+        <div className={classes.Logo} onClick={props.closed}>
           <Logo />
         </div>
-        <nav>
-          {console.log("props.isAuth", props.isAuth)}
-          <NavigationItems isAuth={props.isAuth} />
+        <nav onClick={props.closed}>
+          <NavigationItems isAuth={props.isAuth} clicked={props.closed} />
         </nav>
       </div>
     </Aux>

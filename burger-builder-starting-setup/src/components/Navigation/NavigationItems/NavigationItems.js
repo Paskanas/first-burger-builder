@@ -3,14 +3,13 @@ import classes from "./NavigationItems.css";
 import NavigationItem from "./NavigationItem/NavigationItem";
 
 const navigationItems = (props) => {
-  console.log("props.isAuth", props.isAuth);
   const authNavigationItems = props.isAuth ? (
     <NavigationItem link={"/logout"} active>
       Logout
     </NavigationItem>
   ) : (
     <NavigationItem link={"/auth"} active>
-      Authenticate
+      Log in
     </NavigationItem>
   );
   return (
@@ -20,7 +19,7 @@ const navigationItems = (props) => {
       </NavigationItem>
       {props.isAuth ? (
         <NavigationItem link={"/orders"} active>
-          Checkout
+          Orders
         </NavigationItem>
       ) : null}
       {authNavigationItems}

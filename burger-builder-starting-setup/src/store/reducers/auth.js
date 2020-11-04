@@ -1,5 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
-import * as utils from "../utils";
+import * as utils from "../../common/utils";
 
 const initialState = {
   token: null,

@@ -34,7 +34,6 @@ export const logout = () => {
 };
 
 export const checkOffTimeout = (expirationTime) => {
-  console.log("expirationTime", expirationTime);
   return (dispatch) => {
     setTimeout(() => {
       dispatch(logout());
@@ -61,19 +60,10 @@ export const auth = (email, password, isSignUp) => {
     axios
       .post(url, authData)
       .then((response) => {
-        console.log("response", response);
-        console.log("new Date()", new Date());
-        console.log("Date()", Date());
-        console.log("new Date().getTime()", new Date().getTime());
-        console.log(
-          "new Date().getTime() + miliSecondsToSeconds(response.data.expiresIn)",
-          new Date().getTime() + miliSecondsToSeconds(response.data.expiresIn)
-        );
-
         const expirationDate = new Date(
           new Date().getTime() + miliSecondsToSeconds(response.data.expiresIn)
         );
-        console.log("expirationDate", expirationDate);
+
         localStorage.setItem("token", response.data.idToken);
         localStorage.setItem("expirationDate", expirationDate);
         // localStorage.setItem("userId", response.data.localId); // TODO remove this line
@@ -81,7 +71,6 @@ export const auth = (email, password, isSignUp) => {
         dispatch(checkOffTimeout(response.data.expiresIn));
       })
       .catch((error) => {
-        console.log("error.response", error.response);
         dispatch(authFail(error.response.data.error));
       });
   };
@@ -97,14 +86,10 @@ export const setAuthRederectPath = (path) => {
 export const authCheckState = () => {
   return (dispatch) => {
     const token = localStorage.getItem("token");
-    console.log("authCheckState -> token", token);
-
     if (!token) {
       dispatch(logout());
     } else {
       const expirationDate = new Date(localStorage.getItem("expirationDate"));
-      console.log("authCheckState -> expirationDate", expirationDate);
-
       if (expirationDate > new Date()) {
         axios
           .post(
@@ -113,26 +98,18 @@ export const authCheckState = () => {
             { idToken: token }
           )
           .then((response) => {
-            console.log("response", response);
-
-            console.log(
-              "response.data.users[0].localId",
-              response.data.users[0].localId
-            );
             dispatch(authSuccess(token, response.data.users[0].localId));
           })
           .catch((error) => {
-            console.log("error", error);
             dispatch(logout());
           });
         // TODO comment below
         // const userId = localStorage.getItem("userId");
         // dispatch(authSuccess(token, userId));
-        console.log("expirationDate.getSeconds", expirationDate.getTime());
-        console.log("new Date().getSeconds", new Date().getTime());
+
         const expiryTime =
           (expirationDate.getTime() - new Date().getTime()) / 1000;
-        console.log("authCheckState -> expiryTime", expiryTime);
+
         dispatch(checkOffTimeout(expiryTime));
       } else {
         dispatch(logout());

@@ -2,8 +2,6 @@ import * as actionTypes from "./actionTypes";
 import axios from "../../axies-order";
 
 export const purchaseBurgerSuccess = (id, orderData) => {
-  console.log("purchaseBurgerSuccess -> orderData", orderData);
-
   return {
     type: actionTypes.PURCHASE_BURDER_SUCCESS,
     orderId: id,
@@ -46,7 +44,6 @@ export const fetchOrders = (token, userId) => {
     dispatch(fetchOrdersInit());
     const queryParams =
       "auth=" + token + '&orderBy="userId"&equalTo="' + userId + '"';
-    console.log("queryParams", queryParams);
     axios
       .get("/orders.json?" + queryParams)
       .then((res) => {
@@ -68,11 +65,9 @@ export const puchaseBurger = (orderData, token) => {
     axios
       .post("/orders.json?auth=" + token, orderData)
       .then((response) => {
-        console.log("response.data.name", response.data.name);
         dispatch(purchaseBurgerSuccess(response.data.name, orderData));
       })
       .catch((error) => {
-        console.log(error);
         dispatch(purchaseBurgerFail(error));
       });
   };

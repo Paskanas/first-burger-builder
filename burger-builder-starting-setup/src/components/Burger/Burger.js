@@ -18,7 +18,6 @@ const burger = (props) => {
   return (
     <div className={classes.Burger}>
       <BurgerIngredient type={"bread-top"} />
-      {console.log("burger -> transformedIngredients", transformedIngredients)}
       {transformedIngredients}
       <BurgerIngredient type={"bread-bottom"} />
     </div>

@@ -7,6 +7,7 @@ import * as actions from "../../store/actions/index";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import errorMessages from "./errorMessages";
 import { Redirect } from "react-router-dom";
+import { updateObject, checkValidity } from "../../common/utils";
 
 class Auth extends Component {
   state = {
@@ -51,50 +52,18 @@ class Auth extends Component {
     }
   }
 
-  checkValidity(value, rules) {
-    let isValid = true;
-    if (!rules) {
-      return true;
-    }
-
-    if (rules.required) {
-      isValid = value.trim() !== "" && isValid;
-    }
-
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-
-    if (rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid;
-    }
-
-    if (rules.isEmail) {
-      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-      isValid = pattern.test(value) && isValid;
-    }
-
-    if (rules.isNumeric) {
-      const pattern = /^\d+$/;
-      isValid = pattern.test(value) && isValid;
-    }
-
-    return isValid;
-  }
-
   inputChangedHandler = (event, controlName) => {
-    const updatedConrols = {
-      ...this.state.controls,
-      [controlName]: {
-        ...this.state.controls[controlName],
+    const updatedConrols = updateObject(this.state.controls, {
+      [controlName]: updateObject(this.state.controls[controlName], {
         value: event.target.value,
-        valid: this.checkValidity(
+        valid: checkValidity(
           event.target.value,
           this.state.controls[controlName].validation
         ),
         touched: true,
-      },
-    };
+      }),
+    });
+
     this.setState({ controls: updatedConrols });
   };
 
@@ -149,7 +118,9 @@ class Auth extends Component {
     );
 
     const errorMessage = this.props.error ? (
-      <p>{errorMessages(this.props.error.message)}</p>
+      <p className={classes.ValidationError}>
+        {errorMessages(this.props.error.message)}
+      </p>
     ) : null;
 
     const authRedirect = this.props.isAuth ? (
@@ -160,6 +131,7 @@ class Auth extends Component {
       <div className={classes.Auth}>
         {authRedirect}
         {errorMessage}
+        {/**It is for do net let submit form if form is invalid */}
         <form onSubmit={this.submitHandler}>{inputForm}</form>
         <Button btnType="Danger" clicked={this.switchAuthModeHandler}>
           {this.state.isSignUp ? "SWITCH TO SIGNIN" : "SWITCH TO SIGNUP"}
