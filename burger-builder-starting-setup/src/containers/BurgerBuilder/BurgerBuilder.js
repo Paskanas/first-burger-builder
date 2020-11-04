@@ -9,10 +9,9 @@ import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
-// import * as actionTypes from "../../store/actions/actionTypes";
 import * as actions from "../../store/actions"; // it is not nessesery write index file, gets automatically
 
-class BurgerBuilder extends Component {
+export class BurgerBuilder extends Component {
   state = {
     purchasing: false,
     loading: false,
@@ -20,12 +19,9 @@ class BurgerBuilder extends Component {
   };
 
   componentDidMount() {
-    console.log(
-      "BurgerBuilder -> render -> this.state.loading",
-      this.state.loading
-    );
-
-    this.props.onFetchIngredients();
+    if (!this.props.buildingBurger) {
+      this.props.onFetchIngredients();
+    }
   }
 
   updatePurchaseState(ingredients) {
@@ -117,6 +113,7 @@ const mapStateToProps = (state) => {
     totalPrice: state.burgerBuilder.totalPrice,
     error: state.error,
     isAuth: state.auth.token,
+    buildingBurger: state.burgerBuilder.building,
   };
 };
 

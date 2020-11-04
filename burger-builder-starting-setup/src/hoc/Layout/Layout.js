@@ -22,7 +22,6 @@ class Layout extends Component {
   render() {
     return (
       <Aux>
-        {console.log("this.props.isAuthenticated", this.props.isAuthenticated)}
         <Toolbar
           isAuth={this.props.isAuthenticated}
           clicked={this.SideDrawerOpenHandler}

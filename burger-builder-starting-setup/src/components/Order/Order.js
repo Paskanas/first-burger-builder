@@ -28,7 +28,7 @@ const order = (props) => {
       </span>
     );
   });
-  console.log(props.price);
+
   return (
     <div className={classes.Order}>
       <p>Ingredients: {ingredientOutput}</p>

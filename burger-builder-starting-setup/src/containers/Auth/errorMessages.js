@@ -1,7 +1,6 @@
 import * as errors from "./const";
 
 const errorMessages = (error) => {
-  console.log("error", error);
   switch (error) {
     case errors.EMAIL_EXISTS:
       return "Email exists";
