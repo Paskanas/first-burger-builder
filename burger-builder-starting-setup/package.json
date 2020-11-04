@@ -62,11 +62,11 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,json,css}": [
-    "prettier --single-quote --write",
-    "test:staged",
-    "git add"
-     ]
-    },
+      "prettier --single-quote --write",
+      "test:staged",
+      "git add"
+    ]
+  },
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,mjs}"
