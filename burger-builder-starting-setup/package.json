@@ -57,9 +57,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom",
-    "precommit": "lint-staged",
-    "test:staged": "cross-env CI=true react-scripts test --env=jsdom --findRelatedTests"
+    "test": "cross-env CI=true node scripts/test.js --env=jsdom",
+    "lint": "eslint src"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,json,css}": [
@@ -109,5 +108,15 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.2",
+    "husky": "^4.3.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm test",
+      "pre-push": "npm run lint && npm test"
+    }
   }
 }

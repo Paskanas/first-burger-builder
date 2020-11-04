@@ -9,6 +9,12 @@ https://enzymejs.github.io/enzyme/?utm_source=next.36kr.com
 Jest documentation:
 https://jestjs.io/docs/en/getting-started
 
+MAKING run test automaticaly after commit:
+https://levelup.gitconnected.com/using-pre-commit-and-pre-push-git-hooks-in-a-react-project-6c83431ef2bd
+but it neet adapted to my app
+npm install husky --save-dev
+npm install cross-env --save-dev
+
 My notes end.
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
